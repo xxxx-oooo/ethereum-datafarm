@@ -14,3 +14,5 @@ RUN pip cache purge
 
 # add user
 RUN useradd -s /sbin/nologin -u 1001 -d /opt/ethereum-datafarm datafarm
+
+VOLUME "data/"
