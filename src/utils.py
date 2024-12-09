@@ -37,9 +37,7 @@ _args = parser.parse_args()
 LOCATION = vars(_args)["location"]
 CORES = int(vars(_args)["cores"])
 LOGGING = bool(vars(_args)["log"])
-
-with open("../key/key.txt", "r") as file:
-    KEY = file.read()
+KEY = os.getenv("ETHSCAN_KEY")
 
 if not os.path.isdir("../abis"):
     os.mkdir("../abis")
@@ -51,7 +49,7 @@ if not os.path.isdir("../tmp"):
     os.mkdir("../tmp")
 
 PAYLOAD = (
-    "https://api.etherscan.io/api"
+    "https://api.bscscan.com/api"
     + "?module=logs"
     + "&action=getLogs"
     + "&fromBlock={}"
@@ -176,7 +174,7 @@ def convert_to(bytes32inHex, toType):
 
 def latest_block():
     payload = (
-        "https://api.etherscan.io/api"
+        "https://api.bscscan.com/api"
         + "?module=block"
         + "&action=getblocknobytime"
         + f"&timestamp={round(datetime.timestamp(datetime.now()))}"
@@ -268,7 +266,7 @@ def get_abi(contract):
                 return get_abi(contract)
 
     except:
-        esc = f"https://api.etherscan.io/api?module=contract&action=getabi&address={contract.address}&apikey={KEY}"
+        esc = f"https://api.bscscan.com/api?module=contract&action=getabi&address={contract.address}&apikey={KEY}"
         res = requests.get(esc)
         time.sleep(1)
         abi = json.loads(res.content)["result"]
